@@ -13,17 +13,15 @@ import {
   useColorScheme,
   Alert,
   View,
+  Text
 } from 'react-native';
 
 import {
   Colors,
 } from 'react-native/Libraries/NewAppScreen';
-import { NativeBaseProvider, Button, Input } from "native-base";
-import axios from 'axios';
-import RootNavigator from './src/routes/RootNavigator';
 // import FormExample from './src/screens/form';
 
-function App(){
+const Home = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -31,12 +29,12 @@ function App(){
   };
 
   return (
-    <NativeBaseProvider>
-      <RootNavigator/>
-    </NativeBaseProvider>
+    <View>
+        <Text>Home</Text>
+    </View>
   );
 }
 
 
 
-export default App;
+export default Home;
