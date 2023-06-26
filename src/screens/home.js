@@ -15,7 +15,7 @@ import {
   View,
   Text
 } from 'react-native';
-
+import { VStack, Center, Icon, Box, Heading, Stack } from 'native-base';
 import {
   Colors,
 } from 'react-native/Libraries/NewAppScreen';
@@ -29,8 +29,30 @@ const Home = () => {
   };
 
   return (
-    <View>
-        <Text>Home</Text>
+    <View >
+        <VStack space="2.5" mt="4" px="8">
+          <Heading size="md">Menu</Heading>
+          <Stack direction="row" mb="2.5" mt="1.5" space={3}>
+            <Center size="16" bg="primary.400" rounded="sm" _text={{
+            color: 'warmGray.50',
+            fontWeight: 'medium'
+          }} shadow={'3'}>
+              Box 1
+            </Center>
+            <Center bg="primary.500" size="16" rounded="sm" _text={{
+            color: 'warmGray.50',
+            fontWeight: 'medium'
+          }} shadow={'3'}>
+              Box 2
+            </Center>
+            <Center size="16" bg="primary.700" rounded="sm" _text={{
+            color: 'warmGray.50',
+            fontWeight: 'medium'
+          }} shadow={'3'}>
+              Box 3
+            </Center>
+          </Stack>
+      </VStack>
     </View>
   );
 }

@@ -12,13 +12,14 @@ import {
   StatusBar,
   useColorScheme,
   Alert,
+  Text,
   View,
 } from 'react-native';
 
 import {
   Colors,
 } from 'react-native/Libraries/NewAppScreen';
-import { NativeBaseProvider, Button, Input } from "native-base";
+import { Center, Box, Button, Input, Heading, VStack, FormControl, HStack, Link } from "native-base";
 import axios from 'axios';
 // import FormExample from './src/screens/form';
 
@@ -46,10 +47,12 @@ const LoginPage = (props) => {
     if (email === '') {
         Alert.alert('Error', 'email required')
         valid = false
+        return
     }
     if (password === '') {
         Alert.alert('Error', 'password required')
         valid = false
+        return
     }
     if (valid) {
         // if valid submit to api using axios
@@ -61,7 +64,7 @@ const LoginPage = (props) => {
               Alert.alert('Error', 'Email atau password salah')
             }
             if (res.data.message === 'Success') {
-              Alert.alert('Success')
+              // Alert.alert('Success')
               navigation.replace('Home')
             }
         } catch(err) {
@@ -73,7 +76,61 @@ const LoginPage = (props) => {
 
   return (
     <>
-      <View
+    <Center w="100%">
+    <Box safeArea p="2" pt="40" py="8" w="90%" maxW="290">
+        <Heading size="lg" fontWeight="600" color="coolGray.800" _dark={{
+        color: "warmGray.50"
+      }}>
+          Welcome
+        </Heading>
+        <Heading mt="1" _dark={{
+        color: "warmGray.200"
+      }} color="coolGray.600" fontWeight="medium" size="xs">
+          Sign in to continue!
+        </Heading>
+
+        <VStack space={3} mt="5">
+          <FormControl>
+            <FormControl.Label>Email ID</FormControl.Label>
+            <Input 
+            autoCapitalize='none'
+            value={email}
+            onChangeText={handleChangeEmail}/>
+          </FormControl>
+          <FormControl>
+            <FormControl.Label>Password</FormControl.Label>
+            <Input type="password" 
+            value={password}
+            onChangeText={handleChangePassword}/>
+            <Link _text={{
+            fontSize: "xs",
+            fontWeight: "500",
+            color: "indigo.500"
+          }} alignSelf="flex-end" mt="1">
+              Forget Password?
+            </Link>
+          </FormControl>
+          <Button mt="2" onPress={handleSubmit} bg="primary.500">
+            Sign in
+          </Button>
+          <HStack mt="6" justifyContent="center">
+            <Text fontSize="sm" color="coolGray.600" _dark={{
+            color: "warmGray.200"
+          }}>
+              I'm a new user.{" "}
+            </Text>
+            <Link _text={{
+            color: "indigo.500",
+            fontWeight: "medium",
+            fontSize: "sm"
+          }} href="#">
+              Sign Up
+            </Link>
+          </HStack>
+        </VStack>
+      </Box>
+    </Center>
+      {/* <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
             padding:20
@@ -128,7 +185,7 @@ const LoginPage = (props) => {
               Submit
             </Button>
         </View>
-        </View>
+        </View> */}
     </>
   );
 }

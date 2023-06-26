@@ -14,7 +14,10 @@ const RootNavigator = props => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name='Login' component={login} />
-        <Stack.Screen name='Home' component={home} />
+        <Stack.Screen name='Home' component={home} options={{
+          title: "Home", headerShown: true
+          }} />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );
