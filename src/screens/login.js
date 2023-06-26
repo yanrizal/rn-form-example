@@ -7,13 +7,9 @@
 
 import React, { useState } from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   useColorScheme,
   Alert,
   Text,
-  View,
 } from 'react-native';
 
 import {
@@ -21,7 +17,6 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import { Center, Box, Button, Input, Heading, VStack, FormControl, HStack, Link } from "native-base";
 import axios from 'axios';
-// import FormExample from './src/screens/form';
 
 const LoginPage = (props) => {
   const { navigation } = props;
@@ -110,7 +105,8 @@ const LoginPage = (props) => {
               Forget Password?
             </Link>
           </FormControl>
-          <Button mt="2" onPress={handleSubmit} bg="primary.500">
+          <Button mt="2" onPress={handleSubmit} bg="primary.500"
+          >
             Sign in
           </Button>
           <HStack mt="6" justifyContent="center">
@@ -130,62 +126,6 @@ const LoginPage = (props) => {
         </VStack>
       </Box>
     </Center>
-      {/* <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            padding:20
-          }}>
-           
-            <View style={{width:200, justifyContent:'center', alignItems:'center', alignSelf:'center'}}>
-            
-        <Input shadow={2} _light={{
-          bg: "coolGray.100",
-          _hover: {
-            bg: "coolGray.200"
-          },
-          _focus: {
-            bg: "coolGray.200:alpha.70"
-          }
-        }} _dark={{
-          bg: "coolGray.800",
-          _hover: {
-            bg: "coolGray.900"
-          },
-          _focus: {
-            bg: "coolGray.900:alpha.70"
-          }
-        }} 
-        autoCapitalize='none'
-        value={email}
-        onChangeText={handleChangeEmail}
-        placeholder="Email" />
-
-        <Input shadow={2} _light={{
-          bg: "coolGray.100",
-          _hover: {
-            bg: "coolGray.200"
-          },
-          _focus: {
-            bg: "coolGray.200:alpha.70"
-          }
-        }} _dark={{
-          bg: "coolGray.800",
-          _hover: {
-            bg: "coolGray.900"
-          },
-          _focus: {
-            bg: "coolGray.900:alpha.70"
-          }
-        }} type="password" 
-        value={password}
-        onChangeText={handleChangePassword}
-        placeholder="Password" />
-
-          <Button shadow={2} onPress={handleSubmit} style={{marginTop:20}}>
-              Submit
-            </Button>
-        </View>
-        </View> */}
     </>
   );
 }
