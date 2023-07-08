@@ -9,14 +9,16 @@ import React, { useState } from 'react';
 import {
   useColorScheme,
   Alert,
+  View,
   Text,
 } from 'react-native';
 
 import {
   Colors,
 } from 'react-native/Libraries/NewAppScreen';
-import { Center, Box, Button, Input, Heading, VStack, FormControl, HStack, Link } from "native-base";
+import { Center, Box, Button, Input, Heading, VStack, FormControl, HStack, Link, Image } from "native-base";
 import axios from 'axios';
+import avatarIcon from '../assets/images/avatar_default.jpg'
 
 const LoginPage = (props) => {
   const { navigation } = props;
@@ -70,10 +72,11 @@ const LoginPage = (props) => {
   }
 
   return (
-    <>
+    <View  style={{backgroundColor:'#9b9798',flex:1}}>
+    <Text style={{position:'absolute',top:20,left:20,color:'#01a659'}}>EMS</Text>
     <Center w="100%">
     <Box safeArea p="2" pt="40" py="8" w="90%" maxW="290">
-        <Heading size="lg" fontWeight="600" color="coolGray.800" _dark={{
+        {/* <Heading size="lg" fontWeight="600" color="coolGray.800" _dark={{
         color: "warmGray.50"
       }}>
           Welcome
@@ -82,51 +85,51 @@ const LoginPage = (props) => {
         color: "warmGray.200"
       }} color="coolGray.600" fontWeight="medium" size="xs">
           Sign in to continue!
-        </Heading>
-
-        <VStack space={3} mt="5">
+        </Heading> */}
+        <Image size={20} alt="fallback text" borderRadius={100} source={avatarIcon} style={{alignSelf:'center'}} />
+        <VStack space={3} mt="6">
           <FormControl>
-            <FormControl.Label>Email ID</FormControl.Label>
             <Input 
-            autoCapitalize='none'
+            autoCapitalize="none"
+            placeholder="Email"
             value={email}
+            style={{backgroundColor:'#FFF'}}
             onChangeText={handleChangeEmail}/>
           </FormControl>
-          <FormControl>
-            <FormControl.Label>Password</FormControl.Label>
-            <Input type="password" 
+          <FormControl style={{marginTop:5}}>
+            <Input 
+            type="password"
+            placeholder="Password"
             value={password}
+            style={{backgroundColor:'#FFF'}}
             onChangeText={handleChangePassword}/>
-            <Link _text={{
+            {/* <Link _text={{
             fontSize: "xs",
             fontWeight: "500",
             color: "indigo.500"
           }} alignSelf="flex-end" mt="1">
               Forget Password?
-            </Link>
+            </Link> */}
           </FormControl>
-          <Button mt="2" onPress={handleSubmit} bg="primary.500"
+          <Button mt="2" onPress={handleSubmit} style={{backgroundColor:"#01a659",color:'#FFF'}}
           >
-            Sign in
+            Login
           </Button>
           <HStack mt="6" justifyContent="center">
-            <Text fontSize="sm" color="coolGray.600" _dark={{
-            color: "warmGray.200"
-          }}>
-              I'm a new user.{" "}
-            </Text>
-            <Link _text={{
-            color: "indigo.500",
+            <Link 
+            _text={{
+              color: "#01a659",
             fontWeight: "medium",
-            fontSize: "sm"
+            fontSize: "sm",
+            textDecoration: "none"
           }} href="#">
-              Sign Up
+              Forgot Password
             </Link>
           </HStack>
         </VStack>
       </Box>
     </Center>
-    </>
+    </View>
   );
 }
 
