@@ -14,7 +14,7 @@ const RootNavigator = props => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {/* <Stack.Screen name='Login' component={login} /> */}
+        <Stack.Screen name='Login' component={login} />
         <Stack.Screen name='Home' component={TabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
