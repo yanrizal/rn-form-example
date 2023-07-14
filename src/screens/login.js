@@ -57,12 +57,14 @@ const LoginPage = (props) => {
             const API_URL_SERVER = `http://emshotels.net/myapi/login.php?email=${email}&password=${password}`
             const res = await axios.post(API_URL_SERVER)
             console.log(res)
-            if (res.data.message === 'Error') {
+            if (res.data.length === 0) {
               Alert.alert('Error', 'Email atau password salah')
-            }
-            if (res.data.message === 'Success') {
-              // Alert.alert('Success')
-              navigation.replace('Home')
+            } else {
+              console.log(res.data[0].propID)
+              navigation.navigate('Hometab', {
+                screen: 'Home',
+                params: { id: res.data[0].propID }
+              });
             }
         } catch(err) {
             console.log(err)

@@ -11,11 +11,12 @@ import {
   View,
   Text
 } from 'react-native';
-import { VStack, Skeleton, Avatar, Box, Spacer, Stack, HStack, Badge } from 'native-base';
+import { VStack, Skeleton, Avatar, Box, Spacer, Stack, HStack, Badge, Image } from 'native-base';
 import axios from 'axios';
-import { ItemClick } from 'native-base/lib/typescript/components/composites/Typeahead/useTypeahead/types';
 
-const Home = () => {
+const Home = ({route}) => {
+  const {id} = route.params
+  console.log('route',id)
   const [loading, setLoading] = useState(true)
   const [data,setData] = useState([]);
 
@@ -76,9 +77,12 @@ const Home = () => {
               borderColor: "muted.50"
             }} borderColor="muted.800" pl={["0", "4"]} pr={["0", "5"]} py="2">
                     <HStack space={[2, 3]} justifyContent="space-between">
-                      <Avatar size="48px" source={{
-                  uri: item.photo
-                }} />
+                      {/* <Avatar size="48px" source={{
+                        uri: `https://emshotels.net/manager/workorder/photo/${item.photo}`
+                      }} /> */}
+                      <Image source={{
+                    uri: `https://emshotels.net/manager/workorder/photo/${item.photo}`
+                  }} alt="Alternate Text" size="md" />
                       <VStack>
                       <Badge>WO-12356</Badge>
                       <Text style={{fontStyle:'italic'}} _dark={{
