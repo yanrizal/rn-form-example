@@ -15,8 +15,8 @@ import { VStack, Skeleton, Avatar, Box, Spacer, Stack, HStack, Badge, Image } fr
 import axios from 'axios';
 
 const Home = ({route}) => {
-  const {id} = route.params
-  console.log('route',id)
+  const {id, dept} = route.params
+  console.log('route',id, dept)
   const [loading, setLoading] = useState(true)
   const [data,setData] = useState([]);
 

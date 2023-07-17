@@ -60,10 +60,10 @@ const LoginPage = (props) => {
             if (res.data.length === 0) {
               Alert.alert('Error', 'Email atau password salah')
             } else {
-              console.log(res.data[0].propID)
+              console.log(res.data[0])
               navigation.navigate('Hometab', {
                 screen: 'Home',
-                params: { id: res.data[0].propID }
+                params: { id: res.data[0].propID, dept: res.data[0].dept }
               });
             }
         } catch(err) {
