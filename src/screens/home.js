@@ -22,7 +22,7 @@ const Home = ({route}) => {
 
   const loadData = async () => {
     try {
-      const API_URL_SERVER = `https://emshotels.net/myapi/woread.php`
+      const API_URL_SERVER = `https://emshotels.net/myapi/woread.php?id=${id}&dept=${dept}`
       const res = await axios.get(API_URL_SERVER)
       console.log('res',res)
       setData(res.data)
