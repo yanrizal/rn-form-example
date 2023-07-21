@@ -27,8 +27,8 @@ const LoginPage = (props) => {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  const [email, setEmail] = useState('admin@demo.com')
-  const [password, setPassword] = useState('123456')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
   const handleChangeEmail = (text) => {
     setEmail(text)
