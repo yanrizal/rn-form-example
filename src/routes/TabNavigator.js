@@ -1,13 +1,17 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AddIcon, Avatar, HamburgerIcon } from 'native-base'
-import home from '../screens/home';
+import Home from '../screens/home';
+import AddForm from '../screens/addForm';
 
 const Tab = createBottomTabNavigator();
 
-function MyTabs() {
+function MyTabs(props) {
+  console.log('pro',props)
   return (
     <Tab.Navigator initialRouteName="Home">
-        <Tab.Screen name="Add" component={home} options={{
+        <Tab.Screen name="Add"
+        children={()=><AddForm route={props.route.params.params}/>}
+        options={{
           title: "Add", 
           headerShown: true,
           headerTintColor: '#fff',
@@ -23,7 +27,8 @@ function MyTabs() {
             <AddIcon size="5" mt="0.5" color="emerald.500" />
           )
           }}/>
-      <Tab.Screen name="Home" component={home} 
+      <Tab.Screen name="Home"
+          children={()=><Home route={props.route.params.params}/>}
           options={{
           title: "EMS", 
           headerShown: true,
@@ -42,7 +47,7 @@ function MyTabs() {
           },
           tabBarIconStyle: { display: "none" },
           }}/>
-      <Tab.Screen name="Settings" component={home} 
+      <Tab.Screen name="Settings" component={Home} 
       options={{
         title: "OUT", 
         headerShown: true,
@@ -58,7 +63,7 @@ function MyTabs() {
         },
         tabBarIconStyle: { display: "none" },
         }}/>
-        <Tab.Screen name="Profile" component={home} options={{
+        <Tab.Screen name="Profile" component={Home} options={{
           title: "Profile", 
           headerShown: true,
           headerTintColor: '#fff',

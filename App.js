@@ -6,32 +6,40 @@
  */
 
 import React, { useState } from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  useColorScheme,
-  Alert,
-  View,
-} from 'react-native';
-
-import {
-  Colors,
-} from 'react-native/Libraries/NewAppScreen';
-import { NativeBaseProvider, Button, Input } from "native-base";
+import { NativeBaseProvider, extendTheme } from "native-base";
 import axios from 'axios';
 import RootNavigator from './src/routes/RootNavigator';
 // import FormExample from './src/screens/form';
 
 function App(){
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  const theme = extendTheme({
+    colors: {
+      // Add new color
+      primary: {
+        50: "#01a659",
+        100: "#01a659",
+        200: "#01a659",
+        300: "#01a659",
+        400: "#01a659",
+        500: "#01a659",
+        600: "#01a659",
+        700: "#01a659",
+        800: "#01a659",
+        900: "#01a659",
+      },
+      // Redefining only one shade, rest of the color will remain same.
+      amber: {
+        400: "#d97706",
+      },
+    },
+    config: {
+      // Changing initialColorMode to 'dark'
+      initialColorMode: "dark",
+    },
+  });
 
   return (
-    <NativeBaseProvider>
+    <NativeBaseProvider theme={theme}>
       <RootNavigator/>
     </NativeBaseProvider>
   );

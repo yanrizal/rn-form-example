@@ -8,14 +8,13 @@
 import React, { useState, useEffect } from 'react';
 import {
   FlatList,
-  View,
-  Text
+  Alert
 } from 'react-native';
-import { VStack, Skeleton, Avatar, Box, Spacer, Stack, HStack, Badge, Image } from 'native-base';
+import { VStack, Skeleton, Avatar, Box, Spacer, Stack, HStack, Badge, Image, Text } from 'native-base';
 import axios from 'axios';
 
 const Home = ({route}) => {
-  const {id, dept} = route.params
+  const {id, dept} = route
   console.log('route',id, dept)
   const [loading, setLoading] = useState(true)
   const [data,setData] = useState([]);
@@ -59,7 +58,7 @@ const Home = ({route}) => {
     
 
   return (
-    <View style={{backgroundColor:'#FFF',flex:1}}>
+    <Box flex="1" bg="muted.50">
         <VStack space="2.5" mt="4" px="8">
           {loading &&
           <>
@@ -84,30 +83,20 @@ const Home = ({route}) => {
                     uri: `https://emshotels.net/manager/workorder/photo/${item.photo}`
                   }} alt="Alternate Text" size="md" />
                       <VStack>
-                      <Badge>WO-12356</Badge>
-                      <Text style={{fontStyle:'italic'}} _dark={{
-                          color: "warmGray.50"
-                        }} color="coolGray.800" bold>
+                      <Badge bg="muted.200" width="40%">WO-12356</Badge>
+                      <Text color="warmGray.600">
                           Date: {item.mulainya}
                         </Text>
-                        <Text  _dark={{
-                          color: "warmGray.50"
-                        }} color="coolGray.800" bold>
+                        <Text  color="warmGray.600">
                           Location: {item.lokasi}
                         </Text>
-                        <Text color="coolGray.600" _dark={{
-                            color: "warmGray.200"
-                          }}>
+                        <Text  color="warmGray.600">
                           Order By: {item.orderBy}
                         </Text>
-                        <Text color="coolGray.600" _dark={{
-                            color: "warmGray.200"
-                          }}>
+                        <Text  color="warmGray.600">
                           Priority: <Text style={{color:"#F43C4A",fontWeight:'bold'}} >{item.priority.toUpperCase()}</Text>
                         </Text>
-                        <Text style={{width:250}} numberOfLines={2} color="coolGray.600" _dark={{
-                            color: "warmGray.200"
-                          }}>
+                        <Text width="250" numberOfLines={2}  color="warmGray.600">
                           Job: {item.job}
                         </Text>
                       </VStack>
@@ -118,11 +107,11 @@ const Home = ({route}) => {
                         {item.timeStamp}
                       </Text>
                     </HStack>
-                  </Box>} keyExtractor={item => item.id} />
+                  </Box>} keyExtractor={(item,index) => index} />
           </Stack>
           }
       </VStack>
-    </View>
+    </Box>
   );
 }
 
