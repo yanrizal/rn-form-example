@@ -5,13 +5,14 @@
  * @format
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   FlatList,
   Alert
 } from 'react-native';
 import { VStack, Skeleton, Avatar, Box, Spacer, Stack, HStack, Badge, Image, Text } from 'native-base';
 import axios from 'axios';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Home = ({route}) => {
   const {id, dept} = route
@@ -32,9 +33,12 @@ const Home = ({route}) => {
     }
   }
 
-  useEffect(() => {
-    loadData()
-  },[])
+  useFocusEffect(
+    useCallback(() => {
+      console.log('focus')
+      loadData()
+    }, [route])
+  );
 
     // {
     //   id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",

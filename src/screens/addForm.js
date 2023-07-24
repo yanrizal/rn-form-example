@@ -10,8 +10,10 @@ import { Alert } from 'react-native';
 import { VStack, FormControl, Input, Box, Select, Button, Center, CheckIcon, TextArea, Image } from 'native-base';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
 
 const AddForm = ({route}) => {
+  const navigation = useNavigation();
   const {id, dept} = route
   const [dataTo, setDataTo] = useState([])
   const [dataLocation, setDataLocation] = useState([])
@@ -60,16 +62,29 @@ const AddForm = ({route}) => {
     setPhoto(result.assets[0].uri)
   }
 
-  const handleSubmit = () => {
-    const dataForm = {
-      location,
-      woto,
-      category,
-      priority,
-      message,
-      photo
+  const handleSubmit = async () => {
+    const data = new FormData() 
+    data.append('location', location)
+    data.append('woto', woto)
+    data.append('category', category)
+    data.append('priority', priority)
+    data.append('message', message)
+    data.append('photo', photo)
+    const response = await axios.post(`https://emshotels.net/myapi/postWO.php`, data)
+    console.log('r',response, data)
+    if (response.data.status === 'SUCCESS') {
+      Alert.alert('Success', 'success', [
+        {text: 'OK', onPress: () => {
+          navigation.navigate('Hometab', {
+            screen: 'Home',
+            params: { id: id, dept: dept }
+          });
+        }},
+      ]);
+      
+    } else {
+      alert(response.data.status)
     }
-    console.log(dataForm)
   }
     
   return (
@@ -110,7 +125,7 @@ const AddForm = ({route}) => {
                 <FormControl>
                 <TextArea h={20} placeholder="Message/Problem" color="black" value={message} onChangeText={(e) => setMessage(e)}/>
                 </FormControl>
-                <FormControl>
+                <FormControl isReadOnly>
                 <Select shadow={2} selectedValue={priority} color="black" minWidth="200" accessibilityLabel="Priority" placeholder="Priority" _selectedItem={{
                   bg: "muted.500",
                   endIcon: <CheckIcon size="5" />
