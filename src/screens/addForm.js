@@ -26,6 +26,7 @@ const AddForm = ({route}) => {
   const [priority, setPriority] = useState("");
   const [message, setMessage] = useState("");
   const [photo, setPhoto] = useState("");
+  const [dataImage, setDataImage] = useState("");
 
   const loadData = async () => {
     try {
@@ -59,7 +60,8 @@ const AddForm = ({route}) => {
     const result = await launchImageLibrary(options);
 
     console.log(result)
-    setPhoto(result.assets[0].uri)
+    setPhoto(result.assets[0])
+    setDataImage(result.assets[0].uri)
   }
 
   const handleSubmit = async () => {
@@ -69,11 +71,21 @@ const AddForm = ({route}) => {
     data.append('category', category)
     data.append('priority', priority)
     data.append('message', message)
-    data.append('photo', photo)
+    data.append('photo', photo.fileName)
     data.append('id', id)
     data.append('dept', dept)
     const response = await axios.post(`https://emshotels.net/myapi/postWO.php`, data)
-    console.log('r',response, data)
+
+    const data2 = new FormData() 
+    data2.append('sendimage', {uri: photo.uri,name: photo.fileName,type: photo.type})
+    const response2 = await axios({
+      method: "post",
+      url: "https://emshotels.net/myapi/api-file-upload.php",
+      data: data2,
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+
+    console.log('r',response2, data2)
     if (response.data.status === 'SUCCESS') {
       Alert.alert('Success', 'success', [
         {text: 'OK', onPress: () => {
@@ -141,7 +153,7 @@ const AddForm = ({route}) => {
                   {photo == "" ? (
                     <Button bg="gray.400" onPress={handleImagePick}>Upload Image</Button>
                     ):(
-                      <Image source={{uri:photo}} alt={photo} size={20}/>
+                      <Image source={{uri:photo.uri}} alt={photo.uri} size={20}/>
                     )
                   }
                 </FormControl>
