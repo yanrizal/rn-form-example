@@ -2,6 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AddIcon, Avatar, HamburgerIcon } from 'native-base'
 import Home from '../screens/home';
 import AddForm from '../screens/addForm';
+import Profile from '../screens/profil';
 
 const Tab = createBottomTabNavigator();
 
@@ -63,7 +64,9 @@ function MyTabs(props) {
         },
         tabBarIconStyle: { display: "none" },
         }}/>
-        <Tab.Screen name="Profile" component={Home} options={{
+        <Tab.Screen name="Profile" 
+        children={()=><Profile route={props.route.params.params}/>}
+        options={{
           title: "Profile", 
           headerShown: true,
           headerTintColor: '#fff',

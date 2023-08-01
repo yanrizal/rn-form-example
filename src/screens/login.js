@@ -62,7 +62,7 @@ const LoginPage = (props) => {
               console.log(res.data[0])
               navigation.navigate('Hometab', {
                 screen: 'Home',
-                params: { id: res.data[0].propID, dept: res.data[0].dept }
+                params: { id: res.data[0].propID, dept: res.data[0].dept, email: email }
               });
             }
         } catch(err) {
