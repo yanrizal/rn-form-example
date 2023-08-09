@@ -36,6 +36,7 @@ const Profile = ({route}) => {
   const [telp, setTelp] = useState('')
   const [name, setName] = useState('')
   const [loading, setLoading] = useState(false)
+  const [imageUrl, setImageUrl] = useState('')
   
 
   const loadData = async () => {
@@ -48,6 +49,7 @@ const Profile = ({route}) => {
       setTelp(res.data[0].Telp)
       setIduser(res.data[0].id)
       setName(res.data[0].nama)
+      setImageUrl(res.data[0].photoprofile)
     } catch(err) {
         console.log(err)
         Alert.alert('Error', err)
@@ -134,11 +136,11 @@ const Profile = ({route}) => {
     <Center w="100%">
       
     <Box safeArea p="2" pt="10" py="8" w="90%" maxW="290">
-        {}
+        {imageUrl !== "" &&
         <Image size='lg' borderRadius={100} source={{
-      uri: "https://emshotels.net/images/user/profile/USER_1057.jpg"
+      uri: `https://emshotels.net/images/user/profile/${imageUrl}`
     }} alt="user image" />
-
+  }
 
         <VStack space={3} mt="6" >
         <Text color="muted.50" fontSize="xl">
