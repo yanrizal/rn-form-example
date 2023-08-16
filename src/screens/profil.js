@@ -19,6 +19,7 @@ import axios from 'axios';
 import avatarIcon from '../assets/images/avatar_default.jpg'
 import { Modal } from "native-base";
 import { useNavigation } from '@react-navigation/native';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 const Profile = ({route}) => {
   const navigation = useNavigation();
@@ -44,12 +45,13 @@ const Profile = ({route}) => {
       const API_URL_SERVER = `https://emshotels.net/myapi/readprofile.php?id=${id}&email=${mail}`
       const res = await axios.get(API_URL_SERVER)
       console.log('res',res)
+      console.log('res2',res.data[0].photoprofile.trim())
       setData(res.data[0])
       setEmail(res.data[0].email)
       setTelp(res.data[0].Telp)
       setIduser(res.data[0].id)
       setName(res.data[0].nama)
-      setImageUrl(res.data[0].photoprofile)
+      setImageUrl(res.data[0].photoprofile.trim())
     } catch(err) {
         console.log(err)
         Alert.alert('Error', err)
@@ -62,6 +64,43 @@ const Profile = ({route}) => {
       loadData()
     }, [route])
   );
+ 
+
+  const handleChangeimage = async () => {
+    console.log('id',id)
+    const options = {
+      mediaType: 'photo'
+    }
+
+    // You can also use as a promise without 'callback':
+    const result = await launchImageLibrary(options);
+    console.log('result image', result)
+    let localUri = result.assets[0].uri;
+    let filename = localUri.split('/').pop();
+    let match = /\.(\w+)$/.exec(filename);
+    let type = match ? `image/${match[1]}` : `image`;
+    console.log({ uri: localUri, name: filename, type }, match[1])
+    const formData = new FormData()
+    formData.append('id', iduser) 
+    formData.append('photoprofile', { uri: localUri, name: `photoprofile.${match[1]}`, type })
+    const response = await axios.post('https://emshotels.net/myapi/changephoto.php', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
+    // const response = await axios({
+    //   method: "post",
+    //   url: "https://emshotels.net/myapi/changephoto.php",
+    //   data: data,
+    //   headers: { "Content-Type": "multipart/form-data" },
+    // })
+
+    console.log('r',response, data)
+    if (response.data.status) {
+      alert("photo profile updated!")
+      loadData()
+    } else {
+      alert(response.data.status)
+    }
+  }
 
   const handleChangeIduser = (text) => {
     setIduser(text)
@@ -142,6 +181,10 @@ const Profile = ({route}) => {
     }} alt="user image" />
   }
 
+<FormControl>
+                    <Button bg="green.400" onPress={handleChangeimage}>Change Image</Button>
+                </FormControl>
+
         <VStack space={3} mt="6" >
         <Text color="muted.50" fontSize="xl">
                           Id User: {data.id}
@@ -176,7 +219,7 @@ const Profile = ({route}) => {
           <FormControl>
               <FormControl.Label>ID</FormControl.Label>
               <Input
-            value={iduser} onChangeText={handleChangeIduser} defaultValue={data.id} value={iduser}></Input>
+            value={iduser} onChangeText={handleChangeIduser} defaultValue={data.id} Value={iduser}></Input>
             </FormControl>
             <FormControl>
               <FormControl.Label>Name</FormControl.Label>
