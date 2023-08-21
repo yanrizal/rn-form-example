@@ -38,10 +38,12 @@ const Profile = ({route}) => {
   const [name, setName] = useState('')
   const [loading, setLoading] = useState(false)
   const [imageUrl, setImageUrl] = useState('')
+  const [date, setDate] = useState(new Date())
   
 
   const loadData = async () => {
     try {
+      setImageUrl("")
       const API_URL_SERVER = `https://emshotels.net/myapi/readprofile.php?id=${id}&email=${mail}`
       const res = await axios.get(API_URL_SERVER)
       console.log('res',res)
@@ -52,6 +54,7 @@ const Profile = ({route}) => {
       setIduser(res.data[0].id)
       setName(res.data[0].nama)
       setImageUrl(res.data[0].photoprofile.trim())
+      setDate(new Date())
     } catch(err) {
         console.log(err)
         Alert.alert('Error', err)
@@ -175,9 +178,9 @@ const Profile = ({route}) => {
     <Center w="100%">
       
     <Box safeArea p="2" pt="10" py="8" w="90%" maxW="290">
-        {imageUrl !== "" &&
+    {imageUrl !== "" &&
         <Image size='lg' borderRadius={100} source={{
-      uri: `https://emshotels.net/images/user/profile/${imageUrl}`
+      uri: `https://emshotels.net/images/user/profile/${imageUrl}?time=${date}` , cache: "reload"
     }} alt="user image" />
   }
 
