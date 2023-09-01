@@ -8,22 +8,25 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   FlatList,
-  Alert,
-  Pressable
+  Alert
 } from 'react-native';
-import { VStack, Skeleton, Button, Box, Spacer, Stack, HStack, Badge, Image, Text } from 'native-base';
+import { VStack, Skeleton, Avatar,Button, FormControl,Input,Pressable, Box, Spacer, Stack, HStack, Badge, Image, Text } from 'native-base';
 import axios from 'axios';
 import { useFocusEffect } from '@react-navigation/native';
+import { Modal } from "native-base";
 
-const Home = ({route}) => {
+const Outbox = ({route}) => {
   const {id, dept} = route
   console.log('route',id, dept)
   const [loading, setLoading] = useState(true)
   const [data,setData] = useState([]);
+  const [job, setJob] = useState('');
+  const [lokasi, setLokasi] = useState('')
+
 
   const loadData = async () => {
     try {
-      const API_URL_SERVER = `https://emshotels.net/myapi/woread.php?id=${id}&dept=${dept}`
+      const API_URL_SERVER = `https://emshotels.net/myapi/wout.php?id=${id}&dept=${dept}`
       const res = await axios.get(API_URL_SERVER)
       console.log('res',res)
       setData(res.data)
@@ -33,13 +36,31 @@ const Home = ({route}) => {
         Alert.alert('Error', err)
     }
   }
-
+//membuat fungsi onPress disini
+ //untuk modal
+ const [showModal, setShowModal] = useState(false);
   useFocusEffect(
     useCallback(() => {
       console.log('focus')
       loadData()
     }, [route])
   );
+
+  const handleJob = (text) => {
+    setJob(text)
+  }
+  const handlelokasi = (text) => {
+    setLokasi(text)
+  }
+
+  const handleSubmit = async () => {
+    let valid = true
+    if (job === '') {
+        Alert.alert('Error', 'job required')
+        valid = false
+        return
+    }
+  }
 
     // {
     //   id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
@@ -60,6 +81,12 @@ const Home = ({route}) => {
     //   recentText: "All the best",
     //   avatarUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSr01zI37DYuR8bMV5exWQBSw28C1v_71CAh8d7GP1mplcmTgQA6Q66Oo--QedAN1B4E1k&usqp=CAU"
     // }
+
+    const handleOpenModal = (job, loc) => {
+        setShowModal(true)
+        setJob(job)
+        setLokasi(loc)
+    }
     
 
   return (
@@ -84,14 +111,15 @@ const Home = ({route}) => {
                       {/* <Avatar size="48px" source={{
                         uri: `https://emshotels.net/manager/workorder/photo/${item.photo}`
                       }} /> */}
-                      <VStack>
                       <Image source={{
                     uri: `https://emshotels.net/manager/workorder/photo/${item.photo}`
                   }} alt="Alternate Text" size="md" />
-                  <Button bg="green.400" onPress={() => console.log('s')}>Test</Button>
-                  </VStack>
+
+          <Pressable onPress={() => handleOpenModal(item.job, item.lokasi)}>
+          {
+
+
                       <VStack>
-                        <Pressable onPress={() => alert('ss')}>
                       <Badge bg="muted.200" width="40%">WO-12356</Badge>
                       <Text color="warmGray.600">
                           Date: {item.mulainya}
@@ -108,12 +136,54 @@ const Home = ({route}) => {
                         <Text width="250" numberOfLines={2}  color="warmGray.600">
                           Job: {item.job}
                         </Text>
-                        </Pressable>
                       </VStack>
+                    }
+            </Pressable>
+
+
+            <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+            <Modal.Content maxWidth="400px">
+            <Modal.CloseButton />
+            <Modal.Header>Edit WO</Modal.Header>
+            <Modal.Body>
+                <FormControl>
+                <FormControl.Label>Job :</FormControl.Label>
+                <Input
+            onChangeText={handleJob} value={job} ></Input>
+                </FormControl>
+                <FormControl>
+
+                <FormControl.Label>Location :</FormControl.Label>
+                <Input
+            onChangeText={handlelokasi} value={lokasi} ></Input>
+                </FormControl>
+
+            </Modal.Body>
+            <Modal.Footer>
+                <Button.Group space={2}>
+                <Button variant="ghost" colorScheme="blueGray" onPress={() => {
+                setShowModal(false);
+                }}>
+                    Cancel
+                </Button>
+                {loading ? (
+                    <Button mt="2"  disabled>
+                    Loading...
+                    </Button>
+                ):(
+                    <Button mt="2" onPress={handleSubmit} >
+                    Save
+                    </Button>
+                )}
+                
+                </Button.Group>
+            </Modal.Footer>
+            </Modal.Content>
+            </Modal>
                       <Spacer />
                       <Text fontSize="xs" _dark={{
-                        color: "warmGray.50"
-                      }} color="coolGray.800" alignSelf="flex-start">
+                  color: "warmGray.50"
+                }} color="coolGray.800" alignSelf="flex-start">
                         {item.timeStamp}
                       </Text>
                     </HStack>
@@ -127,4 +197,6 @@ const Home = ({route}) => {
 
 
 
-export default Home;
+
+
+export default Outbox;

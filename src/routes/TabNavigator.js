@@ -3,6 +3,7 @@ import { AddIcon, Avatar, HamburgerIcon } from 'native-base'
 import Home from '../screens/home';
 import AddForm from '../screens/addForm';
 import Profile from '../screens/profil';
+import Outbox from '../screens/outbox';
 
 const Tab = createBottomTabNavigator();
 
@@ -48,22 +49,26 @@ function MyTabs(props) {
           },
           tabBarIconStyle: { display: "none" },
           }}/>
-      <Tab.Screen name="Settings" component={Home} 
-      options={{
-        title: "OUT", 
-        headerShown: true,
-        headerTintColor: '#fff',
-        tabBarActiveTintColor: '#01a659',
-        headerStyle: {
-          backgroundColor: '#01a659',
-        },
-        tabBarLabel: 'OUT',
-        tabBarLabelStyle: {
-          fontSize:23,
-          marginBottom:10
-        },
-        tabBarIconStyle: { display: "none" },
-        }}/>
+      <Tab.Screen name="Outbox"
+          children={()=><Outbox route={props.route.params.params}/>}
+          options={{
+          title: "EMS", 
+          headerShown: true,
+          headerTintColor: '#01a659',
+          tabBarActiveTintColor: '#01a659',
+          headerStyle: {
+            backgroundColor: '#fff',
+          },
+          headerRight: () => (
+            <HamburgerIcon size="5" mt="0.5" color="#999" style={{marginRight:20}} />
+          ),
+          tabBarLabel: 'OUT',
+          tabBarLabelStyle: {
+            fontSize:23,
+            marginBottom:10
+          },
+          tabBarIconStyle: { display: "none" },
+          }}/>
         <Tab.Screen name="Profile" 
         children={()=><Profile route={props.route.params.params}/>}
         options={{
