@@ -22,6 +22,7 @@ const Outbox = ({route}) => {
   const [data,setData] = useState([]);
   const [job, setJob] = useState('');
   const [lokasi, setLokasi] = useState('')
+  const [woId, setWoId] = useState('')
 
 
   const loadData = async () => {
@@ -82,12 +83,60 @@ const Outbox = ({route}) => {
     //   avatarUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSr01zI37DYuR8bMV5exWQBSw28C1v_71CAh8d7GP1mplcmTgQA6Q66Oo--QedAN1B4E1k&usqp=CAU"
     // }
 
-    const handleOpenModal = (job, loc) => {
+    const handleOpenModal = (id, job, loc) => {
         setShowModal(true)
         setJob(job)
         setLokasi(loc)
+        setWoId(id)
+    }
+    const handleUpdate = async () => {
+      let valid = true
+      if (job === '') {
+          Alert.alert('Error', 'job required')
+          valid = false
+          return
+      }
+      if (lokasi === '') {
+        Alert.alert('Error', 'lokasi required')
+        valid = false
+        return
     }
     
+      if (valid) {
+          // if valid submit to api using axios
+          try {
+              const data = new FormData() 
+              data.append('woId', woId)
+              data.append('job',job )
+              data.append('lokasi', lokasi)
+           
+              setLoading(true)
+              const API_URL_SERVER = `https://emshotels.net/myapi/updateWO.php`
+              const res = await axios({
+                method: "post",
+                url: API_URL_SERVER,
+                data: data,
+                headers: { "Content-Type": "multipart/form-data" },
+              })
+              console.log(res)
+              
+              if (res.data.length === 0) {
+                setLoading(false)
+                Alert.alert('Error', 'Email atau password salah')
+              } else {
+                loadData()
+                Alert.alert('Success', 'Updated!')
+                setShowModal(false)
+                setLoading(false)
+                
+              }
+          } catch(err) {
+              console.log(err)
+              Alert.alert('Error', err.message)
+          }
+      }
+    }
+   
 
   return (
     <Box flex="1" bg="muted.50">
@@ -115,12 +164,10 @@ const Outbox = ({route}) => {
                     uri: `https://emshotels.net/manager/workorder/photo/${item.photo}`
                   }} alt="Alternate Text" size="md" />
 
-          <Pressable onPress={() => handleOpenModal(item.job, item.lokasi)}>
-          {
-
-
+          <Pressable onPress={() => handleOpenModal(item.woId, item.job, item.lokasi)}>
+                  {
                       <VStack>
-                      <Badge bg="muted.200" width="40%">WO-12356</Badge>
+                      <Badge bg="muted.200" width="40%">WO-{item.woId}</Badge>
                       <Text color="warmGray.600">
                           Date: {item.mulainya}
                         </Text>
@@ -171,8 +218,8 @@ const Outbox = ({route}) => {
                     Loading...
                     </Button>
                 ):(
-                    <Button mt="2" onPress={handleSubmit} >
-                    Save
+                    <Button mt="2" onPress={handleUpdate} >
+                    Update
                     </Button>
                 )}
                 
