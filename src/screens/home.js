@@ -4,23 +4,19 @@
  *
  * @format
  */
-
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   FlatList,
-  Alert,
-  Pressable
+  Alert
 } from 'react-native';
-import { VStack, Skeleton, Button, Box, Spacer, Stack, HStack, Badge, Image, Text } from 'native-base';
+import { VStack, Skeleton, Avatar, Box, Button, Spacer, Stack, HStack, Badge, Image, Text } from 'native-base';
 import axios from 'axios';
 import { useFocusEffect } from '@react-navigation/native';
-
 const Home = ({route}) => {
   const {id, dept} = route
   console.log('route',id, dept)
   const [loading, setLoading] = useState(true)
   const [data,setData] = useState([]);
-
   const loadData = async () => {
     try {
       const API_URL_SERVER = `https://emshotels.net/myapi/woread.php?id=${id}&dept=${dept}`
@@ -33,35 +29,90 @@ const Home = ({route}) => {
         Alert.alert('Error', err)
     }
   }
-
   useFocusEffect(
     useCallback(() => {
       console.log('focus')
       loadData()
     }, [route])
   );
+  const handleSubmit = async () => {
+    let valid = true
+    if (email === '') {
+        Alert.alert('Error', 'email required')
+        valid = false
+        return
+    }
+    if (password === '') {
+        Alert.alert('Error', 'password required')
+        valid = false
+        return
+    }
+    if (valid) {
+        // if valid submit to api using axios
+        try {
+            const API_URL_SERVER = `http://emshotels.net/myapi/login.php?email=${email}&password=${password}`
+            const res = await axios.post(API_URL_SERVER)
+            console.log(res)
+            if (res.data.length === 0) {
+              Alert.alert('Error', 'Email atau password salah')
+            } else {
+              console.log(res.data[0])
+              navigation.navigate('Hometab', {
+                screen: 'Home',
+                params: { woId: res.data[0].woId, id: res.data[0].propID, dept: res.data[0].dept, email: email } // tambahan provide email juga
+              });
+            }
+        } catch(err) {
+            console.log(err)
+            Alert.alert('Error', err.message)
+        }
+    }
+  }
 
-    // {
-    //   id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    //   fullName: "Aafreen Khan",
-    //   timeStamp: "12:47 PM",
-    //   recentText: "Good Day!",
-    //   avatarUrl: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-    // },{
-    //   id: "58694a0f-3da1-471f-bd96-145571e29d72",
-    //   fullName: "Anci Barroco",
-    //   timeStamp: "6:22 PM",
-    //   recentText: "Good Day!",
-    //   avatarUrl: "https://miro.medium.com/max/1400/0*0fClPmIScV5pTLoE.jpg"
-    // }, {
-    //   id: "68694a0f-3da1-431f-bd56-142371e29d72",
-    //   fullName: "Aniket Kumar",
-    //   timeStamp: "8:56 PM",
-    //   recentText: "All the best",
-    //   avatarUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSr01zI37DYuR8bMV5exWQBSw28C1v_71CAh8d7GP1mplcmTgQA6Q66Oo--QedAN1B4E1k&usqp=CAU"
-    // }
-    
-
+  const handleReceive = async (status, woId) => {
+    let valid = true
+    if (status === '') {
+        Alert.alert('Error', 'status required')
+        valid = false
+        return
+    }
+ 
+  
+    if (valid) {
+        // if valid submit to api using axios
+        try {
+            const data = new FormData() 
+            data.append('woId', woId)
+            data.append('status',status )
+           
+         
+            setLoading(true)
+            console.log('sta', status, woId)
+            const API_URL_SERVER = `https://emshotels.net/myapi/changeStatus.php`
+            const res = await axios({
+              method: "post",
+              url: API_URL_SERVER,
+              data: data,
+              headers: { "Content-Type": "multipart/form-data" },
+            })
+            console.log(res)
+            
+            if (res.data.length === 0) {
+              setLoading(false)
+              Alert.alert('Error', 'Email atau password salah')
+            } else {
+              loadData()
+              Alert.alert('Success', 'Updated!')
+              // setShowModal(false)
+              setLoading(false)
+              
+            }
+        } catch(err) {
+            console.log(err)
+            Alert.alert('Error', err.message)
+        }
+    }
+  }
   return (
     <Box flex="1" bg="muted.50">
         <VStack space="2.5" mt="4" px="8">
@@ -81,18 +132,25 @@ const Home = ({route}) => {
               borderColor: "muted.50"
             }} borderColor="muted.800" pl={["0", "4"]} pr={["0", "5"]} py="2">
                     <HStack space={[2, 3]} justifyContent="space-between">
-                      {/* <Avatar size="48px" source={{
-                        uri: `https://emshotels.net/manager/workorder/photo/${item.photo}`
-                      }} /> */}
-                      <VStack>
+                      
+              <VStack>
                       <Image source={{
                     uri: `https://emshotels.net/manager/workorder/photo/${item.photo}`
                   }} alt="Alternate Text" size="md" />
-                  <Button bg="green.400" onPress={() => console.log('s')}>Test</Button>
+
+                  <Button bg="green.400" onPress={() => handleReceive('received', item.woId)}>Receive</Button>
+
+
+                 
+
                   </VStack>
+
+
                       <VStack>
-                        <Pressable onPress={() => alert('ss')}>
-                      <Badge bg="muted.200" width="40%">WO-12356</Badge>
+           
+          
+                      <Badge bg="muted.200" width="40%">{item.woId}
+                      </Badge>
                       <Text color="warmGray.600">
                           Date: {item.mulainya}
                         </Text>
@@ -108,12 +166,14 @@ const Home = ({route}) => {
                         <Text width="250" numberOfLines={2}  color="warmGray.600">
                           Job: {item.job}
                         </Text>
-                        </Pressable>
+                        <Text  color="warmGray.600">
+                          Status: {item.status}
+                        </Text>
                       </VStack>
                       <Spacer />
                       <Text fontSize="xs" _dark={{
-                        color: "warmGray.50"
-                      }} color="coolGray.800" alignSelf="flex-start">
+                  color: "warmGray.50"
+                }} color="coolGray.800" alignSelf="flex-start">
                         {item.timeStamp}
                       </Text>
                     </HStack>
@@ -124,7 +184,4 @@ const Home = ({route}) => {
     </Box>
   );
 }
-
-
-
 export default Home;
