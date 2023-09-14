@@ -57,7 +57,7 @@ const Profile = ({route}) => {
       setDate(new Date())
     } catch(err) {
         console.log(err)
-        Alert.alert('Error', err)
+        Alert.alert('Error', err.message)
     }
   }
 

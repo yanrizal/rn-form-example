@@ -68,7 +68,6 @@ const Home = ({route}) => {
         }
     }
   }
-
   const handleReceive = async (status, woId) => {
     let valid = true
     if (status === '') {
@@ -137,15 +136,31 @@ const Home = ({route}) => {
                       <Image source={{
                     uri: `https://emshotels.net/manager/workorder/photo/${item.photo}`
                   }} alt="Alternate Text" size="md" />
-
-                  <Button bg="green.400" onPress={() => handleReceive('received', item.woId)}>Receive</Button>
-
-
+              
+                  {item.status == 'new' &&
+                    <Button bg="purple.400" onPress={() => handleReceive('received', item.woId)}>RECEIVED</Button>
+                  }
+                  {item.status == 'received' &&
+                    <Button bg="success.400" onPress={() => handleReceive('progress', item.woId)}>PROGRESS</Button>
+                  }
+                  {item.status == 'progress' &&
+                    <Button bg="amber.400" onPress={() => handleReceive('pending', item.woId)}>PENDING</Button>
+                  }
+                  {item.status == 'progress' &&
+                   <Button bg="muted.400" onPress={() => handleReceive('done', item.woId)}>DONE</Button>
+                  }
+                  {item.status == 'pending' &&
+                    <Button bg="info.400" onPress={() => handleReceive('continue', item.woId)}>CONTINUE</Button>
+                  }
+                 {item.status == 'continue' &&
                  
-
+                   <Button bg="muted.400" onPress={() => handleReceive('done', item.woId)}>DONE</Button>
+                  }                
+                 {item.status == 'continue' &&
+                 
+                   <Button bg="amber.400" style={{marginTop:10}} onPress={() => handleReceive('pending', item.woId)}>PENDING</Button>
+                 }  
                   </VStack>
-
-
                       <VStack>
            
           
@@ -164,7 +179,8 @@ const Home = ({route}) => {
                           Priority: <Text style={{color:"#F43C4A",fontWeight:'bold'}} >{item.priority.toUpperCase()}</Text>
                         </Text>
                         <Text width="250" numberOfLines={2}  color="warmGray.600">
-                          Job: {item.job}
+                        Job: <Text italic><Text bold>{item.job}</Text> </Text>
+                         
                         </Text>
                         <Text  color="warmGray.600">
                           Status: {item.status}

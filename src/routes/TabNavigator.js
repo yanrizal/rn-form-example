@@ -1,5 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { AddIcon, Avatar, HamburgerIcon } from 'native-base'
+import { Pressable } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { AddIcon, Avatar, HamburgerIcon, Menu, Text } from 'native-base'
 import Home from '../screens/home';
 import AddForm from '../screens/addForm';
 import Profile from '../screens/profil';
@@ -8,6 +10,7 @@ import Outbox from '../screens/outbox';
 const Tab = createBottomTabNavigator();
 
 function MyTabs(props) {
+  const navigation = useNavigation();
   console.log('pro',props)
   return (
     <Tab.Navigator initialRouteName="Home">
@@ -37,10 +40,26 @@ function MyTabs(props) {
           headerTintColor: '#01a659',
           tabBarActiveTintColor: '#01a659',
           headerStyle: {
-            backgroundColor: '#fff',
+            backgroundColor: '#fff'
           },
           headerRight: () => (
-            <HamburgerIcon size="5" mt="0.5" color="#999" style={{marginRight:20}} />
+            <Menu w="190" onClose={(e) => console.log(e)} trigger={triggerProps => {
+              return <Pressable style={{marginRight:20}} accessibilityLabel="More options menu" {...triggerProps}>
+                      <HamburgerIcon />
+                    </Pressable>;
+            }}>
+                <Menu.Item>SETTING</Menu.Item>
+                <Menu.Item  onPress={() => navigation.navigate('Hometab', {
+                screen: 'Profile',
+                params: props.route.params.params
+              })}>
+                    <Pressable onPress={() => navigation.navigate('Hometab', {
+                screen: 'Profile',
+                params: props.route.params.params
+              })}><Text>PROFILE</Text></Pressable>
+                </Menu.Item>
+                <Menu.Item>LOG OUT</Menu.Item>
+              </Menu>
           ),
           tabBarLabel: 'IN',
           tabBarLabelStyle: {
@@ -60,7 +79,23 @@ function MyTabs(props) {
             backgroundColor: '#fff',
           },
           headerRight: () => (
-            <HamburgerIcon size="5" mt="0.5" color="#999" style={{marginRight:20}} />
+            <Menu w="190" onClose={(e) => console.log(e)} trigger={triggerProps => {
+              return <Pressable style={{marginRight:20}} accessibilityLabel="More options menu" {...triggerProps}>
+                      <HamburgerIcon />
+                    </Pressable>;
+            }}>
+                <Menu.Item>SETTING</Menu.Item>
+                <Menu.Item  onPress={() => navigation.navigate('Hometab', {
+                screen: 'Profile',
+                params: props.route.params.params
+              })}>
+                    <Pressable onPress={() => navigation.navigate('Hometab', {
+                screen: 'Profile',
+                params: props.route.params.params
+              })}><Text>PROFILE</Text></Pressable>
+                </Menu.Item>
+                <Menu.Item>LOG OUT</Menu.Item>
+              </Menu>
           ),
           tabBarLabel: 'OUT',
           tabBarLabelStyle: {
