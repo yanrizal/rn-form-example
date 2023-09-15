@@ -7,6 +7,7 @@ import { TouchableOpacity, View, Text } from 'react-native';
 import home from '../screens/home';
 import login from '../screens/login';
 import TabNavigator from './TabNavigator';
+import Profile from '../screens/profile';
 
 const RootNavigator = props => {
   const Stack = createNativeStackNavigator();
@@ -16,6 +17,7 @@ const RootNavigator = props => {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name='Login' component={login} />
         <Stack.Screen name='Hometab' component={TabNavigator} />
+        <Stack.Screen name='Profile' component={Profile} />
       </Stack.Navigator>
     </NavigationContainer>
   );

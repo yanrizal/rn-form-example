@@ -23,7 +23,7 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 const Profile = ({route}) => {
   const navigation = useNavigation();
-  const {id, dept, email} = route
+  const {id, dept, email} = route.params.params
   const isDarkMode = useColorScheme() === 'dark'; 
   const [data,setData] = useState({});
   const backgroundStyle = {
@@ -42,6 +42,7 @@ const Profile = ({route}) => {
   
 
   const loadData = async () => {
+    console.log('load', route)
     try {
       setImageUrl("")
       const API_URL_SERVER = `https://emshotels.net/myapi/readprofile.php?id=${id}&email=${mail}`
