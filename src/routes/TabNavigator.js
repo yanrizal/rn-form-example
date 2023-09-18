@@ -41,7 +41,13 @@ function MyTabs(props) {
                 params: props.route.params.params
               })}><Text>PROFILE</Text></Pressable>
                 </Menu.Item>
-                <Menu.Item>LOG OUT</Menu.Item>
+                <Menu.Item  onPress={() => navigation.navigate('Login', {
+                params: props.route.params.params
+              })}>
+                    <Pressable onPress={() => navigation.navigate('Login', {
+                params: props.route.params.params
+              })}><Text>LOGOUT</Text></Pressable>
+                </Menu.Item>
               </Menu>
           ),
           tabBarIcon: ({ focused, color, size }) => (
@@ -80,7 +86,13 @@ function MyTabs(props) {
               params: props.route.params.params
             })}><Text>PROFILE</Text></Pressable>
               </Menu.Item>
-              <Menu.Item>LOG OUT</Menu.Item>
+              <Menu.Item  onPress={() => navigation.navigate('Login', {
+                params: props.route.params.params
+              })}>
+                    <Pressable onPress={() => navigation.navigate('Login', {
+                params: props.route.params.params
+              })}><Text>LOGOUT</Text></Pressable>
+                </Menu.Item>
             </Menu>
         ),
         tabBarIconStyle: { display: "none" },
@@ -110,7 +122,13 @@ function MyTabs(props) {
                     params: props.route.params.params
                   })}><Text>PROFILE</Text></Pressable>
                     </Menu.Item>
-                    <Menu.Item>LOG OUT</Menu.Item>
+                    <Menu.Item  onPress={() => navigation.navigate('Login', {
+                params: props.route.params.params
+              })}>
+                    <Pressable onPress={() => navigation.navigate('Login', {
+                params: props.route.params.params
+              })}><Text>LOGOUT</Text></Pressable>
+                </Menu.Item>
                   </Menu>
               ),
     
@@ -152,7 +170,13 @@ function MyTabs(props) {
                 params: props.route.params.params
               })}><Text>PROFILE</Text></Pressable>
                 </Menu.Item>
-                <Menu.Item>LOG OUT</Menu.Item>
+                <Menu.Item  onPress={() => navigation.navigate('Login', {
+                params: props.route.params.params
+              })}>
+                    <Pressable onPress={() => navigation.navigate('Login', {
+                params: props.route.params.params
+              })}><Text>LOGOUT</Text></Pressable>
+                </Menu.Item>
               </Menu>
           ),
           /*
