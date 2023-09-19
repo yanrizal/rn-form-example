@@ -9,12 +9,13 @@ import {
   useColorScheme,
   Alert,
   View,
+  Pressable
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import {
   Colors,
 } from 'react-native/Libraries/NewAppScreen';
-import { Center, Box, Button, Input, Heading, VStack, FormControl, Form, HStack, Link, Image, Text } from "native-base";
+import { Center, Box, Button, Input, Heading, VStack, FormControl, Form, HStack, Link, Image, Text, Icon, ArrowBackIcon } from "native-base";
 import axios from 'axios';
 import avatarIcon from '../assets/images/avatar_default.jpg'
 import { Modal } from "native-base";
@@ -176,6 +177,17 @@ const Profile = ({route}) => {
   //----------------------------------------------------------------
   return (
     <Box flex="1" bg="gray.500">
+      <HStack bg="#01a659" px="1" py="3" justifyContent="space-between" alignItems="center" w="100%">
+        <HStack alignItems="center">
+          <Pressable onPress={() => navigation.goBack()}>
+          <ArrowBackIcon
+            size="md"
+            color="#FFF"
+            style={{marginLeft:10}}
+          />
+          </Pressable>
+        </HStack>
+      </HStack>
     <Center w="100%">
       
     <Box safeArea p="2" pt="10" py="8" w="90%" maxW="290">
@@ -183,11 +195,11 @@ const Profile = ({route}) => {
         <Image size='lg' borderRadius={100} source={{
       uri: `https://emshotels.net/images/user/profile/${imageUrl}?time=${date}` , cache: "reload"
     }} alt="user image" />
-  }
+    }
 
-<FormControl>
-                    <Button bg="green.400" onPress={handleChangeimage}>Change Image</Button>
-                </FormControl>
+        <FormControl>
+          <Button bg="green.400" onPress={handleChangeimage}>Change Image</Button>
+        </FormControl>
 
         <VStack space={3} mt="6" >
         <Text color="muted.50" fontSize="xl">
