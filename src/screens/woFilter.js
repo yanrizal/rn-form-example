@@ -19,11 +19,13 @@ const WoFilter = ({route}) => {
   const [dataLocation, setDataLocation] = useState([])
   const [dataCategory, setDataCategory] = useState([])
   const dataPriority = ["low","medium","high"]
+  const dataStatus = ["new","receive","progress","pending","done"]
   const [loading, setLoading] = useState([])
   const [woto, setWoto] = useState("");
   const [location, setLocation] = useState("");
   const [category, setCategory] = useState("");
   const [priority, setPriority] = useState("");
+  const [status, setStatus] = useState("");
   const [message, setMessage] = useState("");
   
 
@@ -53,29 +55,44 @@ const WoFilter = ({route}) => {
 
 
   const handleSubmit = async () => {
-    const data = new FormData() 
-    data.append('location', location)
+    // const data = new FormData() 
+    // data.append('location', location)
   
-    data.append('category', category)
-    data.append('priority', priority)
-    data.append('message', message)
+    // data.append('category', category)
+    // data.append('priority', priority)
+    // data.append('status', status)
+    // data.append('job', message)
    
-    data.append('id', id)
-    data.append('dept', dept)
-    const response = await axios.post(`https://emshotels.net/myapi/postWO.php`, data)
+    // data.append('id', id)
+    // data.append('dept', dept)
+    const response = await axios.post(`https://emshotels.net/myapi/woFilter.php`, null,  { params: {
+      location,
+      category,
+      priority,
+      status,
+      job:message,
+      id,
+      dept
+    }})
 
-    if (response.data.status === 'SUCCESS') {
-      Alert.alert('Success', 'success', [
-        {text: 'OK', onPress: () => {
-          navigation.navigate('Hometab', {
-            screen: 'Home',
-            params: { id: id, dept: dept }
-          });
-        }},
-      ]);
+    console.log('resp', response)
+
+    if (response.status === 200) {
+      navigation.navigate('Hometab', {
+        screen: 'Home',
+        params: { id, dept, filter: true, filterData:response.data }
+      });
+      // Alert.alert('Success', 'success', [
+      //   {text: 'OK', onPress: () => {
+      //     navigation.navigate('Hometab', {
+      //       screen: 'Home',
+      //       params: { id: id, dept: dept }
+      //     });
+      //   }},
+      // ]);
       
     } else {
-      alert(response.data.status)
+      alert(response.status)
     }
   }
     
@@ -119,6 +136,17 @@ const WoFilter = ({route}) => {
                   endIcon: <CheckIcon size="5" />
                 }} onValueChange={itemValue => setPriority(itemValue)}>
                     {dataPriority.map((item,index) => (
+                    <Select.Item key={index} shadow={2} label={item} value={item} />
+                  ))}
+                  </Select>
+                </FormControl>
+
+                <FormControl isReadOnly>
+                <Select shadow={2} selectedValue={status} color="black" minWidth="200" accessibilityLabel="status" placeholder="status" _selectedItem={{
+                  bg: "muted.500",
+                  endIcon: <CheckIcon size="5" />
+                }} onValueChange={itemValue => setStatus(itemValue)}>
+                    {dataStatus.map((item,index) => (
                     <Select.Item key={index} shadow={2} label={item} value={item} />
                   ))}
                   </Select>

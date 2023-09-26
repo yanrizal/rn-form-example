@@ -13,10 +13,11 @@ import { VStack, Skeleton, Avatar, Box, Button, Spacer, Stack, HStack, Badge, Im
 import axios from 'axios';
 import { useFocusEffect } from '@react-navigation/native';
 const Home = ({route}) => {
-  const {id, dept} = route
+  const {id, dept, filter, filterData} = route
   console.log('route',id, dept)
   const [loading, setLoading] = useState(true)
   const [data,setData] = useState([]);
+
   const loadData = async () => {
     try {
       const API_URL_SERVER = `https://emshotels.net/myapi/woread.php?id=${id}&dept=${dept}`
@@ -29,12 +30,20 @@ const Home = ({route}) => {
         Alert.alert('Error', err)
     }
   }
+
   useFocusEffect(
     useCallback(() => {
       console.log('focus')
-      loadData()
+      console.log('filter', filter)
+      if (filter) {
+        setData(filterData)
+      } else {
+        loadData()
+      }
+      
     }, [route])
   );
+
   const handleSubmit = async () => {
     let valid = true
     if (email === '') {
@@ -158,7 +167,7 @@ const Home = ({route}) => {
                   }                
                  {item.status == 'continue' &&
                  
-                   <Button bg="amber.400" style={{marginTop:10}} onPress={() => handleReceive('pending', item.woId)}>PENDING</Button>
+                   <Button bg="amber.400" onPress={() => handleReceive('pending', item.woId)}>PENDING</Button>
                  }  
                   </VStack>
                       <VStack>
