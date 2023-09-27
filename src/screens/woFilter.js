@@ -52,6 +52,18 @@ const WoFilter = ({route}) => {
     loadData()
   },[])
 
+  const handleReset = () => {
+    setLocation("")
+    setCategory("")
+    setPriority("")
+    setStatus("")
+    setMessage("")
+    navigation.navigate('Hometab', {
+      screen: 'Home',
+      params: { id, dept, filter: false, filterData:{} }
+    });
+  }
+
 
 
   const handleSubmit = async () => {
@@ -101,6 +113,9 @@ const WoFilter = ({route}) => {
         <Center w="100%">
             <Box safeArea p="2" pt="20" py="8" w="90%" maxW="290">
                 <VStack space={3} mt="6">
+                <Button mt="2" onPress={handleReset}>
+                    RESET
+                </Button>
           
                 <FormControl isReadOnly>
                 <Select shadow={2} selectedValue={location} color="black" minWidth="200" accessibilityLabel="Location" placeholder="Location" _selectedItem={{
