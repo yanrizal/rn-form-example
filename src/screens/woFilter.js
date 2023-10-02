@@ -58,10 +58,10 @@ const WoFilter = ({route}) => {
     setPriority("")
     setStatus("")
     setMessage("")
-    navigation.navigate('Hometab', {
-      screen: 'Home',
-      params: { id, dept, filter: false, filterData:{} }
-    });
+    // navigation.navigate('Hometab', {
+    //   screen: 'Home',
+    //   params: { id, dept, filter: false, filterData:{} }
+    // });
   }
 
 

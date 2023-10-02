@@ -6,11 +6,21 @@ import WoFilter from '../screens/woFilter';
 import { AddIcon, Avatar, HamburgerIcon, Menu, Text } from 'native-base'
 import { Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const Tab = createBottomTabNavigator();
 function MyTabs(props) {
   const navigation = useNavigation();
   console.log('pro',props)
+
+  const handleLogout = () => {
+    AsyncStorage.clear()
+    navigation.navigate('Login', {
+      params: props.route.params.params
+    })
+  }
+
   return (
     <Tab.Navigator initialRouteName="Home">
         <Tab.Screen name="Add"
@@ -44,9 +54,7 @@ function MyTabs(props) {
                 <Menu.Item  onPress={() => navigation.navigate('Login', {
                 params: props.route.params.params
               })}>
-                    <Pressable onPress={() => navigation.navigate('Login', {
-                params: props.route.params.params
-              })}><Text>LOGOUT</Text></Pressable>
+                    <Pressable onPress={handleLogout}><Text>LOGOUT</Text></Pressable>
                 </Menu.Item>
               </Menu>
           ),
@@ -89,9 +97,7 @@ function MyTabs(props) {
               <Menu.Item  onPress={() => navigation.navigate('Login', {
                 params: props.route.params.params
               })}>
-                    <Pressable onPress={() => navigation.navigate('Login', {
-                params: props.route.params.params
-              })}><Text>LOGOUT</Text></Pressable>
+                    <Pressable onPress={handleLogout}><Text>LOGOUT</Text></Pressable>
                 </Menu.Item>
             </Menu>
         ),
@@ -125,9 +131,7 @@ function MyTabs(props) {
                     <Menu.Item  onPress={() => navigation.navigate('Login', {
                 params: props.route.params.params
               })}>
-                    <Pressable onPress={() => navigation.navigate('Login', {
-                params: props.route.params.params
-              })}><Text>LOGOUT</Text></Pressable>
+                    <Pressable onPress={handleLogout}><Text>LOGOUT</Text></Pressable>
                 </Menu.Item>
                   </Menu>
               ),
@@ -173,9 +177,7 @@ function MyTabs(props) {
                 <Menu.Item  onPress={() => navigation.navigate('Login', {
                 params: props.route.params.params
               })}>
-                    <Pressable onPress={() => navigation.navigate('Login', {
-                params: props.route.params.params
-              })}><Text>LOGOUT</Text></Pressable>
+                    <Pressable onPress={handleLogout}><Text>LOGOUT</Text></Pressable>
                 </Menu.Item>
               </Menu>
           ),

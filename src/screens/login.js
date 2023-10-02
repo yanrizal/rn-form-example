@@ -5,11 +5,11 @@
  * @format
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   useColorScheme,
   Alert,
-  View,
+  ActivityIndicator
 } from 'react-native';
 
 import {
@@ -18,6 +18,7 @@ import {
 import { Center, Box, Button, Input, Heading, VStack, FormControl, HStack, Link, Image, Text } from "native-base";
 import axios from 'axios';
 import avatarIcon from '../assets/images/avatar_default.jpg'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginPage = (props) => {
   const { navigation } = props;
@@ -29,6 +30,36 @@ const LoginPage = (props) => {
 
   const [email, setEmail] = useState('admin@demo.com')
   const [password, setPassword] = useState('123456')
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    retrieveData()
+  },[])
+
+  const retrieveData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('@AppStoreKey');
+      console.log('vakue', value)
+      if (value !== null) {
+        // We have data!!
+        const data = JSON.parse(value)
+        console.log(data);
+        navigation.navigate('Hometab', {
+          screen: 'Home',
+          params: { id: data.id, dept: data.dept, email: data.email }
+        });
+        setTimeout(() => {
+          setLoading(false)
+        },2000)
+        
+      } else {
+        setLoading(false)
+      }
+
+    } catch (error) {
+      // Error retrieving data
+    }
+  };
 
   const handleChangeEmail = (text) => {
     setEmail(text)
@@ -37,6 +68,21 @@ const LoginPage = (props) => {
   const handleChangePassword = (text) => {
     setPassword(text)
   }
+
+  const storeData = async (data, email) => {
+    try {
+      const stData = {
+        id: data.propID,
+        dept: data.dept,
+        email
+      }
+      console.log('store', JSON.stringify(stData))
+      await AsyncStorage.setItem('@AppStoreKey',JSON.stringify(stData));
+    } catch (error) {
+      // Error saving data
+    }
+  };
+  
 
   const handleSubmit = async () => {
     let valid = true
@@ -60,6 +106,7 @@ const LoginPage = (props) => {
               Alert.alert('Error', 'Email atau password salah')
             } else {
               console.log(res.data[0])
+              storeData(res.data[0], email)
               navigation.navigate('Hometab', {
                 screen: 'Home',
                 params: { id: res.data[0].propID, dept: res.data[0].dept, email: email }
@@ -70,6 +117,14 @@ const LoginPage = (props) => {
             Alert.alert('Error', err.message)
         }
     }
+  }
+
+  if (loading) {
+    return (
+      <Box flex="1" bg="white" style={{justifyContent:'center'}}>
+      <ActivityIndicator/>
+       </Box>
+    )
   }
 
   return (
