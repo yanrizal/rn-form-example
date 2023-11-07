@@ -14,7 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const AddForm = ({route}) => {
   const navigation = useNavigation();
-  const {id, dept} = route
+  const {id, dept, email} = route
   const [dataTo, setDataTo] = useState([])
   const [dataLocation, setDataLocation] = useState([])
   const [dataCategory, setDataCategory] = useState([])
@@ -66,12 +66,16 @@ const AddForm = ({route}) => {
 
   const handleSubmit = async () => {
     const data = new FormData() 
+    const API_URL_SERVER = `https://emshotels.net/myapi/readprofile.php?id=${id}&email=${email}`
+    const res = await axios.get(API_URL_SERVER)
+    const name = res.data[0].nama
     data.append('location', location)
     data.append('woto', woto)
     data.append('category', category)
     data.append('priority', priority)
     data.append('message', message)
     data.append('photo', photo.fileName)
+    data.append('orderby', name)
     data.append('id', id)
     data.append('dept', dept)
     const response = await axios.post(`https://emshotels.net/myapi/postWO.php`, data)
