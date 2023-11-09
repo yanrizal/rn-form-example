@@ -55,7 +55,9 @@ const Profile = ({route}) => {
       setTelp(res.data[0].Telp)
       setIduser(res.data[0].id)
       setName(res.data[0].nama)
-      setImageUrl(res.data[0].photoprofile.trim())
+      if (res?.data[0]?.photoprofile){
+        setImageUrl(res.data[0].photoprofile.trim())
+      }
       setDate(new Date())
     } catch(err) {
         console.log(err)

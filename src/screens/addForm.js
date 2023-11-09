@@ -75,7 +75,7 @@ const AddForm = ({route}) => {
     data.append('priority', priority)
     data.append('message', message)
     data.append('photo', photo.fileName)
-    data.append('orderby', name)
+    data.append('orderBy', name)
     data.append('id', id)
     data.append('dept', dept)
     const response = await axios.post(`https://emshotels.net/myapi/postWO.php`, data)
