@@ -51,6 +51,29 @@ const AddForm = ({route}) => {
     loadData()
   },[])
 
+  const handleCameraLaunch = () => {
+    const options = {
+      mediaType: 'photo',
+      includeBase64: false,
+      maxHeight: 2000,
+      maxWidth: 2000,
+    };
+  
+    launchCamera(options, response => {
+      if (response.didCancel) {
+        console.log('User cancelled camera');
+      } else if (response.error) {
+        console.log('Camera Error: ', response.error);
+      } else {
+        let imageUri = response.uri || response.assets?.[0]?.uri;
+        //setSelectedImage(imageUri);
+        console.log(response, imageUri);
+        setPhoto(response.assets[0])
+        setDataImage(response.assets[0].uri)
+      }
+    });
+  }
+
   const handleImagePick = async () => {
     const options = {
       mediaType: 'photo'
@@ -79,6 +102,7 @@ const AddForm = ({route}) => {
     data.append('id', id)
     data.append('dept', dept)
     const response = await axios.post(`https://emshotels.net/myapi/postWO.php`, data)
+    console.log('r',response, data)
 
     const data2 = new FormData() 
     data2.append('sendimage', {uri: photo.uri,name: photo.fileName,type: photo.type})
@@ -155,7 +179,7 @@ const AddForm = ({route}) => {
                 </FormControl>
                 <FormControl>
                   {photo == "" ? (
-                    <Button bg="gray.400" onPress={handleImagePick}>Upload Image</Button>
+                    <Button bg="gray.400" onPress={handleCameraLaunch}>Upload Image</Button>
                     ):(
                       <Image source={{uri:photo.uri}} alt={photo.uri} size={20}/>
                     )
