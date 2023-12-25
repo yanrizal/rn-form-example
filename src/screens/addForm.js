@@ -11,6 +11,7 @@ import { VStack, FormControl, Input, Box, Select, Button, Center, CheckIcon, Tex
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import { useCameraPermission } from 'react-native-vision-camera';
 
 const AddForm = ({route}) => {
   const navigation = useNavigation();
@@ -27,9 +28,14 @@ const AddForm = ({route}) => {
   const [message, setMessage] = useState("");
   const [photo, setPhoto] = useState("");
   const [dataImage, setDataImage] = useState("");
+  const { hasPermission, requestPermission } = useCameraPermission()
+
+
 
   const loadData = async () => {
     try {
+      const cam = await requestPermission()
+      console.log('cam',cam,hasPermission)
       const API_URL_DATA_TO = `https://emshotels.net/myapi/woto.php?id=${id}`
       const API_URL_DATA_LOCATION = `https://emshotels.net/myapi/getlocation.php?id=${id}`
       const API_URL_DATA_CATEGORY = `https://emshotels.net/myapi/getcategory.php?id=${id}`
@@ -51,27 +57,34 @@ const AddForm = ({route}) => {
     loadData()
   },[])
 
+  const onCapture = (data) => {
+    console.log('ca', data)
+    setPhoto(`file://${data.file.path}`)
+    setDataImage(data.data)
+  }
+
   const handleCameraLaunch = () => {
-    const options = {
-      mediaType: 'photo',
-      includeBase64: false,
-      maxHeight: 2000,
-      maxWidth: 2000,
-    };
+    navigation.navigate('Camera', { onCapture: onCapture })
+    // const options = {
+    //   mediaType: 'photo',
+    //   includeBase64: false,
+    //   maxHeight: 2000,
+    //   maxWidth: 2000,
+    // };
   
-    launchCamera(options, response => {
-      if (response.didCancel) {
-        console.log('User cancelled camera');
-      } else if (response.error) {
-        console.log('Camera Error: ', response.error);
-      } else {
-        let imageUri = response.uri || response.assets?.[0]?.uri;
-        //setSelectedImage(imageUri);
-        console.log(response, imageUri);
-        setPhoto(response.assets[0])
-        setDataImage(response.assets[0].uri)
-      }
-    });
+    // launchCamera(options, response => {
+    //   if (response.didCancel) {
+    //     console.log('User cancelled camera');
+    //   } else if (response.error) {
+    //     console.log('Camera Error: ', response.error);
+    //   } else {
+    //     let imageUri = response.uri || response.assets?.[0]?.uri;
+    //     //setSelectedImage(imageUri);
+    //     console.log(response, imageUri);
+    //     setPhoto(response.assets[0])
+    //     setDataImage(response.assets[0].uri)
+    //   }
+    // });
   }
 
   const handleImagePick = async () => {
@@ -97,7 +110,7 @@ const AddForm = ({route}) => {
     data.append('category', category)
     data.append('priority', priority)
     data.append('message', message)
-    data.append('photo', photo.fileName)
+    data.append('photo', dataImage.name)
     data.append('orderBy', name)
     data.append('id', id)
     data.append('dept', dept)
@@ -105,7 +118,7 @@ const AddForm = ({route}) => {
     console.log('r',response, data)
 
     const data2 = new FormData() 
-    data2.append('sendimage', {uri: photo.uri,name: photo.fileName,type: photo.type})
+    data2.append('sendimage', {uri: photo, name: dataImage.name, type: dataImage.type})
     const response2 = await axios({
       method: "post",
       url: "https://emshotels.net/myapi/api-file-upload.php",
@@ -181,7 +194,7 @@ const AddForm = ({route}) => {
                   {photo == "" ? (
                     <Button bg="gray.400" onPress={handleCameraLaunch}>Upload Image</Button>
                     ):(
-                      <Image source={{uri:photo.uri}} alt={photo.uri} size={20}/>
+                      <Image source={{uri:photo}} alt={photo} size={20}/>
                     )
                   }
                 </FormControl>

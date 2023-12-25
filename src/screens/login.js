@@ -28,7 +28,7 @@ const LoginPage = (props) => {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  const [email, setEmail] = useState('admin@demo.com')
+  const [email, setEmail] = useState('desa.engineering@potatohead.co')
   const [password, setPassword] = useState('123456')
   const [loading, setLoading] = useState(true)
 
